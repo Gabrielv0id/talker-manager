@@ -1,7 +1,7 @@
 const express = require('express');
 const hash = require('crypto');
 const { readJsonData, filterById } = require('./utils/talkerManagerUtils');
-
+const validationFields = require('./middlewares/validationFields');
 
 const app = express();
 app.use(express.json());
@@ -33,7 +33,7 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(HTTP_OK_STATUS).json(fillteredId);
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', validationFields, (req, res) => {
   const token = hash.randomBytes(8).toString('hex');
   res.status(200).json({ token });
 });
