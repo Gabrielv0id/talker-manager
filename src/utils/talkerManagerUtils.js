@@ -19,7 +19,18 @@ const filterById = async (id) => {
   return filteredId;
 };
 
+const writeUserData = async (user) => {
+  try {
+    const data = await readJsonData();
+    data.push(user);
+    return await fs.writeFile(JSON_PATH, JSON.stringify(data, null, 2));
+  } catch (err) {
+    throw new Error(`não foi possivel inserir o usuario no arquivo: ${err.message}`);
+  }
+};
+
 module.exports = {
   readJsonData,
   filterById,
+  writeUserData,
 };

@@ -1,7 +1,12 @@
 const express = require('express');
 const hash = require('crypto');
-const { readJsonData, filterById } = require('./utils/talkerManagerUtils');
+const { readJsonData, filterById, writeUserData } = require('./utils/talkerManagerUtils');
 const validationFields = require('./middlewares/validationFields');
+const ageValidation = require('./middlewares/ageValidation');
+const nameValidation = require('./middlewares/nameValidation');
+const talkAndWatchedValidation = require('./middlewares/talkAndWatchedValidation');
+const tokenValidation = require('./middlewares/tokenValidation');
+const rateValidation = require('./middlewares/rateValidation');
 
 const app = express();
 app.use(express.json());
@@ -9,8 +14,6 @@ app.use(express.json());
 const HTTP_OK_STATUS = 200;
 const PORT = process.env.PORT || '3001';
 
-
-// não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
@@ -37,6 +40,20 @@ app.post('/login', validationFields, (req, res) => {
   const token = hash.randomBytes(8).toString('hex');
   res.status(200).json({ token });
 });
+
+app.post('/talker', 
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkAndWatchedValidation,
+  rateValidation,
+  async (req, res) => {
+    const user = req.body;
+    const data = await readJsonData();
+    user.id = data.length + 1;
+    await writeUserData(user);
+    res.status(201).json(user);
+  });
 app.listen(PORT, () => {
   console.log('Online');
 });
