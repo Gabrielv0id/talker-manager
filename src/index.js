@@ -1,12 +1,14 @@
 const express = require('express');
-const readJsonData = require('./utils/readJsonData');
+const hash = require('crypto');
+const { readJsonData, filterById } = require('./utils/talkerManagerUtils');
+
 
 const app = express();
 app.use(express.json());
 
 const HTTP_OK_STATUS = 200;
 const PORT = process.env.PORT || '3001';
-const JSON_PATH = './src/talker.json';
+
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -14,22 +16,26 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', async (req, res) => {
-  const data = await readJsonData(JSON_PATH);
+  const data = await readJsonData();
 
   return res.status(HTTP_OK_STATUS).json(data);
 });
 
 app.get('/talker/:id', async (req, res) => {
-  const data = await readJsonData(JSON_PATH);
   const { id } = req.params;
 
-  const fillteredId = data.find((talker) => talker.id === Number(id));
+  const fillteredId = await filterById(id);
 
   if (!fillteredId) {
     return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   }
 
   return res.status(HTTP_OK_STATUS).json(fillteredId);
+});
+
+app.post('/login', (req, res) => {
+  const token = hash.randomBytes(8).toString('hex');
+  res.status(200).json({ token });
 });
 app.listen(PORT, () => {
   console.log('Online');
