@@ -50,6 +50,22 @@ Neste projeto você irá:
 
 🕐  Total: 1h10m20s
 
+
+### Conteúdos extras
+
+Aqui vamos compilar alguns conteúdos extras que podem ajudar no projeto também, não só em aspectos de hard skils, mas de soft skills também.
+
+*Hard skill*
+
+* [:pill:  Revisão de HOFs - Parte I ](https://app.betrybe.com/learn/course/5e938f69-6e32-43b3-9685-c936530fd326/live-lectures/7e707fad-b060-4558-8df9-de22c2ec992a/recording/90673587-e958-4a75-a025-80fa518960c4)
+* [:pill:  Revisão de HOFs - Parte II ](https://app.betrybe.com/learn/course/5e938f69-6e32-43b3-9685-c936530fd326/live-lectures/7e707fad-b060-4558-8df9-de22c2ec992a/recording/f5157fb1-4fdf-413f-9988-248c7e2d9f4c)
+* [Principais problemas com docker-compose](https://app.betrybe.com/learn/course/5e938f69-6e32-43b3-9685-c936530fd326/live-lectures/7e707fad-b060-4558-8df9-de22c2ec992a/recording/9ec2b750-5aac-4cc2-ab43-61093c7e9ff3)
+* [Mentoria Bug Hunting](https://app.betrybe.com/learn/course/5e938f69-6e32-43b3-9685-c936530fd326/live-lectures/7e707fad-b060-4558-8df9-de22c2ec992a/recording/13e65064-459d-4a16-b961-645ed02e3cfe)
+
+*Soft skill*
+* [[Dica de Leitura]“Resiliência: o que é o que você precisa saber sobre suportar as adversidades”](https://trybecourse.slack.com/archives/C0370KS57QW/p1664555400890399)
+
+
 ## Requisitos obrigatórios do Projeto
 
 - [ ] 1. Crie o endpoint GET `/talker`
