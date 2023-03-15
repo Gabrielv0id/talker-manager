@@ -74,11 +74,24 @@ async (req, res) => {
   }
   const personIndex = data.findIndex((person) => person.id === Number(id));
   personUpdate.id = Number(id);
-  
+
   data[personIndex] = personUpdate;
 
   await writeUserData(data);
   return res.status(200).json(personUpdate);
+});
+
+app.delete('/talker/:id', tokenValidation, async (req, res) => {
+  const { id } = req.params;
+  const data = await readJsonData();
+
+  const personIndex = data.findIndex((person) => person.id === Number(id));
+
+  if (personIndex !== -1) {
+    data.splice(personIndex, 1);
+    await writeUserData(data);
+    return res.status(204).end();
+  }
 });
 app.listen(PORT, () => {
   console.log('Online');
