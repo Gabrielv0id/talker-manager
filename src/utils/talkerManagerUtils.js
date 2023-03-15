@@ -15,14 +15,11 @@ const filterById = async (id) => {
   const data = await readJsonData();
 
   const filteredId = data.find((talker) => talker.id === Number(id));
-
   return filteredId;
 };
 
-const writeUserData = async (user) => {
+const writeUserData = async (data) => {
   try {
-    const data = await readJsonData();
-    data.push(user);
     return await fs.writeFile(JSON_PATH, JSON.stringify(data, null, 2));
   } catch (err) {
     throw new Error(`não foi possivel inserir o usuario no arquivo: ${err.message}`);
