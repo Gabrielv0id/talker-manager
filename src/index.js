@@ -18,6 +18,17 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/talker/search', tokenValidation, async (req, res) => {
+  const search = req.query.q;
+
+  const data = await readJsonData();
+  if (!search) {
+    return res.status(HTTP_OK_STATUS).json(data);
+  }
+  const searchName = data.filter((person) => person.name.includes(search));
+  return res.status(HTTP_OK_STATUS).json(searchName);
+});
+
 app.get('/talker', async (req, res) => {
   const data = await readJsonData();
 
@@ -38,7 +49,7 @@ app.get('/talker/:id', async (req, res) => {
 
 app.post('/login', validationFields, (req, res) => {
   const token = hash.randomBytes(8).toString('hex');
-  res.status(200).json({ token });
+  res.status(HTTP_OK_STATUS).json({ token });
 });
 
 app.post('/talker', 
@@ -78,7 +89,7 @@ async (req, res) => {
   data[personIndex] = personUpdate;
 
   await writeUserData(data);
-  return res.status(200).json(personUpdate);
+  return res.status(HTTP_OK_STATUS).json(personUpdate);
 });
 
 app.delete('/talker/:id', tokenValidation, async (req, res) => {
