@@ -1,12 +1,17 @@
 const express = require('express');
 const hash = require('crypto');
-const { readJsonData, filterById, writeUserData } = require('./utils/talkerManagerUtils');
+const { 
+  readJsonData, 
+  filterById, 
+  writeUserData, 
+  searchFilter } = require('./utils/talkerManagerUtils');
 const validationFields = require('./middlewares/validationFields');
 const ageValidation = require('./middlewares/ageValidation');
 const nameValidation = require('./middlewares/nameValidation');
 const talkAndWatchedValidation = require('./middlewares/talkAndWatchedValidation');
 const tokenValidation = require('./middlewares/tokenValidation');
 const rateValidation = require('./middlewares/rateValidation');
+const searchValidation = require('./middlewares/searchValidation');
 
 const app = express();
 app.use(express.json());
@@ -18,15 +23,15 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/talker/search', tokenValidation, async (req, res) => {
-  const search = req.query.q;
+app.get('/talker/search', tokenValidation, searchValidation, async (req, res) => {
+  const { q, rate, date } = req.query;
 
   const data = await readJsonData();
-  if (!search) {
+  if (!q && !rate && !date) {
     return res.status(HTTP_OK_STATUS).json(data);
   }
-  const searchName = data.filter((person) => person.name.includes(search));
-  return res.status(HTTP_OK_STATUS).json(searchName);
+  const personSearched = searchFilter(data, q, rate, date);
+  return res.status(HTTP_OK_STATUS).json(personSearched);
 });
 
 app.get('/talker', async (req, res) => {
