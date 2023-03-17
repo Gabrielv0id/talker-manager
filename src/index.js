@@ -4,7 +4,8 @@ const {
   readJsonData, 
   filterById, 
   writeUserData, 
-  searchFilter } = require('./utils/talkerManagerUtils');
+  searchFilter, 
+  updateRate } = require('./utils/talkerManagerUtils');
 const validationFields = require('./middlewares/validationFields');
 const ageValidation = require('./middlewares/ageValidation');
 const nameValidation = require('./middlewares/nameValidation');
@@ -12,6 +13,7 @@ const talkAndWatchedValidation = require('./middlewares/talkAndWatchedValidation
 const tokenValidation = require('./middlewares/tokenValidation');
 const rateValidation = require('./middlewares/rateValidation');
 const searchValidation = require('./middlewares/searchValidation');
+const ratePatchValidation = require('./middlewares/ratePatchValidation');
 
 const app = express();
 app.use(express.json());
@@ -95,6 +97,15 @@ async (req, res) => {
 
   await writeUserData(data);
   return res.status(HTTP_OK_STATUS).json(personUpdate);
+});
+
+app.patch('/talker/rate/:id', tokenValidation, ratePatchValidation, async (req, res) => {
+  const { id } = req.params;
+  const { rate } = req.body;
+
+  await updateRate(id, rate);
+
+  return res.status(204).end();
 });
 
 app.delete('/talker/:id', tokenValidation, async (req, res) => {

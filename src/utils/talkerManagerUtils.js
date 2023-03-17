@@ -25,7 +25,9 @@ const writeUserData = async (data) => {
     throw new Error(`não foi possivel inserir o usuario no arquivo: ${err.message}`);
   }
 };
+
 const rateAuth = (rate) => Number.isInteger(Number(rate)) && rate >= 1 && rate <= 5;
+
 const searchFilter = (json, input, rate, date) => {
   let searchedPerson = json;
 
@@ -44,10 +46,20 @@ const searchFilter = (json, input, rate, date) => {
   return searchedPerson;
 };
 
+const updateRate = async (id, updateParam) => { 
+  const data = await readJsonData();
+  console.log(data);
+  const findPerson = data.find((person) => person.id === Number(id));
+
+  findPerson.talk.rate = updateParam;
+  await writeUserData(data);
+ };
+
 module.exports = {
   readJsonData,
   filterById,
   writeUserData,
   rateAuth,
   searchFilter,
+  updateRate,
 };
