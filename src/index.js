@@ -14,6 +14,7 @@ const tokenValidation = require('./middlewares/tokenValidation');
 const rateValidation = require('./middlewares/rateValidation');
 const searchValidation = require('./middlewares/searchValidation');
 const ratePatchValidation = require('./middlewares/ratePatchValidation');
+const { findAll } = require('./db/searchDB');
 
 const app = express();
 app.use(express.json());
@@ -40,6 +41,25 @@ app.get('/talker', async (req, res) => {
   const data = await readJsonData();
 
   return res.status(HTTP_OK_STATUS).json(data);
+});
+
+app.get('/talker/db', async (_req, res) => {
+  const [result] = await findAll();
+
+  if (!result) {
+    return res.status(200).json([]);
+  }
+
+  const dbList = result.map((element) => ({
+    id: element.id,
+    name: element.name,
+    age: element.age,
+    talk: {
+      watchedAt: element.talk_watched_at,
+      rate: element.talk_rate,
+    },
+  }));
+  res.status(200).json(dbList);
 });
 
 app.get('/talker/:id', async (req, res) => {
